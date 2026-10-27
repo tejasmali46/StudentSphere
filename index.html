@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudentSphere — Student Registration & Management System</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <!-- Top Header & Academic Branding -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand-group">
+                <div class="brand-icon">🎓</div>
+                <div>
+                    <h1 class="brand-title">StudentSphere</h1>
+                    <p class="brand-subtitle">Student Registration & Management System • MIT Academy of Engineering, Pune</p>
+                </div>
+            </div>
+            <div class="student-badge">
+                <span class="badge-role">Third Year B.Tech Computer Engineering</span>
+                <span class="badge-user">Tejas Mali (PRN: 202401040083)</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Toast Notification Area -->
+        <div id="toastNotification" class="toast" role="alert" aria-live="polite"></div>
+
+        <!-- Dashboard Analytics -->
+        <section id="dashboard" class="dashboard-section">
+            <div class="section-header">
+                <h2>System Analytics & Overview</h2>
+                <span class="badge-live">Live Records</span>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon navy-bg">👥</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Total Registered</span>
+                        <span class="stat-value" id="totalStudents">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon blue-bg">🏛️</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Departments Represented</span>
+                        <span class="stat-value" id="deptCountNumber">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green-bg">📅</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Third Year Students</span>
+                        <span class="stat-value" id="thirdYearCount">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon amber-bg">💾</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Data Persistence</span>
+                        <span class="stat-value status-text">Active (localStorage)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dept-pills-container" id="deptPillsContainer">
+                <span class="dept-breakdown-title">Department Distribution:</span>
+                <div id="deptPills" class="dept-pills"></div>
+            </div>
+        </section>
+
+        <!-- Main Content Grid: Form + Table -->
+        <div class="content-grid">
+            <!-- Registration & Edit Form Section -->
+            <section id="registration" class="card-section form-section">
+                <div class="section-header">
+                    <h2 id="formHeading">Register New Student</h2>
+                    <span id="formModeBadge" class="mode-badge create-mode">New Entry</span>
+                </div>
+                <p class="section-description">Fill in student credentials. All fields are mandatory and validated dynamically.</p>
+
+                <form id="studentForm" novalidate>
+                    <div class="form-row">
+                        <label for="name">Full Name <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" placeholder="e.g. Tejas Mali" autocomplete="off" />
+                        <small class="error-msg" id="error-name"></small>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="prn">PRN / Student ID <span class="required">*</span></label>
+                        <input type="text" id="prn" name="prn" placeholder="e.g. 202401040083" autocomplete="off" />
+                        <small class="error-msg" id="error-prn"></small>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="email">Institutional / Personal Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" placeholder="e.g. tejas.mali@mitaoe.ac.in" autocomplete="off" />
+                        <small class="error-msg" id="error-email"></small>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="mobile">Mobile Number (10-digit Indian) <span class="required">*</span></label>
+                        <input type="tel" id="mobile" name="mobile" placeholder="e.g. 9876543210" maxlength="10" autocomplete="off" />
+                        <small class="error-msg" id="error-mobile"></small>
+                    </div>
+
+                    <div class="form-row-2col">
+                        <div class="form-row">
+                            <label for="department">Department <span class="required">*</span></label>
+                            <select id="department" name="department">
+                                <option value="" disabled selected>Select Department</option>
+                                <option value="Computer Engineering">Computer Engineering</option>
+                                <option value="Information Technology">Information Technology</option>
+                                <option value="Electronics & Telecommunication">Electronics &amp; Telecommunication</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                            </select>
+                            <small class="error-msg" id="error-department"></small>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="year">Year of Study <span class="required">*</span></label>
+                            <select id="year" name="year">
+                                <option value="" disabled selected>Select Academic Year</option>
+                                <option value="First Year">First Year (FE)</option>
+                                <option value="Second Year">Second Year (SE)</option>
+                                <option value="Third Year">Third Year (TE)</option>
+                                <option value="Final Year">Final Year (BE)</option>
+                            </select>
+                            <small class="error-msg" id="error-year"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="dob">Date of Birth <span class="required">*</span></label>
+                        <input type="date" id="dob" name="dob" />
+                        <small class="error-msg" id="error-dob"></small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="submitBtn" class="btn btn-primary">Save Student Record</button>
+                        <button type="button" id="cancelEditBtn" class="btn btn-secondary hidden">Cancel Edit</button>
+                        <button type="reset" id="resetBtn" class="btn btn-outline">Clear Form</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Student Records & Live Directory -->
+            <section id="studentTableSection" class="card-section table-section">
+                <div class="section-header">
+                    <div>
+                        <h2>Student Directory</h2>
+                        <p class="section-description">Real-time dynamic DOM table populated from JSON object array.</p>
+                    </div>
+                    <div class="quick-tools">
+                        <button id="loadSampleDataBtn" class="btn btn-sm btn-outline">Load Sample Records</button>
+                        <button id="clearAllBtn" class="btn btn-sm btn-danger-outline">Clear All</button>
+                    </div>
+                </div>
+
+                <div class="search-controls">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Search by Student Name, PRN, Email, or Department..." />
+                    </div>
+                    <div class="records-counter" id="recordsCounter">Showing 0 records</div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="studentsTable">
+                        <thead>
+                            <tr>
+                                <th>PRN</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Department</th>
+                                <th>Year</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTbody">
+                            <!-- Dynamic rows injected via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-icon">📂</div>
+                    <h3>No Records Found</h3>
+                    <p id="emptyStateText">No students registered yet. Fill out the form or click "Load Sample Records" to populate.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <p>StudentSphere • Web Technology Lab Practical 2 (2304362L) • Third Year B.Tech Computer Engineering</p>
+        <p>Developed by: <strong>Tejas Mali (PRN: 202401040083)</strong> • MIT Academy of Engineering, Pune</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
